@@ -3475,7 +3475,7 @@ Transform:
   m_GameObject: {fileID: 169814430}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.217, y: 2.05, z: 9.42}
+  m_LocalPosition: {x: 2.217, y: 2.435, z: 9.834}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6520,7 +6520,7 @@ Transform:
   m_GameObject: {fileID: 342044268}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.217, y: 2.05, z: 6.087}
+  m_LocalPosition: {x: 2.217, y: 2.435, z: 6.501}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8371,9 +8371,9 @@ MonoBehaviour:
   - {fileID: 718638136}
   patrolSpeed: 2
   hero: {fileID: 1867695508}
-  chaseSpeed: 3.5
-  chaseRange: 5
-  stopDistance: 1.5
+  chaseSpeed: 2
+  chaseRange: 1
+  stopDistance: 1
 --- !u!4 &466272216 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6152299014247383670, guid: 57b32168a216646469b2daa667456376, type: 3}
@@ -12153,7 +12153,7 @@ Transform:
   m_GameObject: {fileID: 718638135}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.28, y: 2.05, z: 9.42}
+  m_LocalPosition: {x: 4.28, y: 2.435, z: 9.834}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15344,6 +15344,10 @@ PrefabInstance:
     - target: {fileID: 8073443194988779917, guid: 6b0b0b098177a3b439c80991ec9deacc, type: 3}
       propertyPath: m_Name
       value: Chicken_001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8881504610387854121, guid: 6b0b0b098177a3b439c80991ec9deacc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8881504610387854135, guid: 6b0b0b098177a3b439c80991ec9deacc, type: 3}
       propertyPath: m_LocalPosition.x
