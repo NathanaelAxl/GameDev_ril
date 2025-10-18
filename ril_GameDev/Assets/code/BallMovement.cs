@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; // Diperlukan untuk mendeteksi scene baru
 
 public class BallController : MonoBehaviour
 {
@@ -15,9 +16,9 @@ public class BallController : MonoBehaviour
     
     [Header("Camera Rotation Settings")]
     [SerializeField] private float mouseRotationSpeed = 3f;
-    [SerializeField] private float minVerticalAngle = -20f;  // Batas bawah
-    [SerializeField] private float maxVerticalAngle = 80f;   // Batas atas
-    [SerializeField] private float cameraResetSpeed = 10f;   // Kecepatan reset kamera
+    [SerializeField] private float minVerticalAngle = -20f;
+    [SerializeField] private float maxVerticalAngle = 80f;
+    [SerializeField] private float cameraResetSpeed = 10f;
     
     [Header("Camera Zoom Settings")]
     [SerializeField] private float zoomSpeed = 2f;
@@ -30,46 +31,40 @@ public class BallController : MonoBehaviour
     private float currentZoomDistance = 7f;
     private bool isBoosting = false;
     
-    // Rotation variables
     private float currentHorizontalAngle = 0f;
     private float currentVerticalAngle = 20f;
+
+    // Fungsi OnEnable dan OnDisable untuk berlangganan event sceneLoaded
+    void OnEnable()
+    {
+        // Berlangganan fungsi OnSceneLoaded setiap kali scene baru selesai dimuat
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // Berhenti berlangganan untuk menghindari error saat objek dihancurkan
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        
-        // Setup camera
-        if (cameraTransform == null && Camera.main != null)
-        {
-            cameraTransform = Camera.main.transform;
-        }
-        
-        // Lock cursor di tengah layar (opsional, comment jika tidak ingin)
-        // Cursor.lockState = CursorLockMode.Locked;
-        // Cursor.visible = false;
+        FindAndAssignCamera(); // Panggil fungsi untuk mencari kamera saat game pertama kali dimulai
     }
 
     void Update()
     {
-
-        
-        // Handle camera zoom dengan scroll wheel
         HandleCameraZoom();
-        
-        // Handle camera rotation dengan mouse
         HandleCameraRotation();
-        
-        // Deteksi boost (Shift)
         isBoosting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        
-        // Toggle cursor lock dengan tombol Escape (opsional)
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        
-        // Lock cursor lagi dengan klik kiri (opsional)
+
         if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.None)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -79,24 +74,27 @@ public class BallController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Ambil input dari keyboard
+        // Tambahkan pengecekan jika kamera tidak ada
+        if (cameraTransform == null)
+        {
+            // Jika kamera belum ditemukan, jangan lakukan apa-apa.
+            // Ini mencegah error saat frame pertama di scene baru.
+            return;
+        }
+        
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        // Dapatkan arah kamera untuk movement relatif terhadap kamera
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
         
-        // Hilangkan komponen Y agar tidak bergerak naik/turun
         cameraForward.y = 0;
         cameraRight.y = 0;
         cameraForward.Normalize();
         cameraRight.Normalize();
 
-        // Hitung arah movement
         Vector3 movement = (cameraForward * moveVertical + cameraRight * moveHorizontal);
 
-        // Apply force ke bola dengan boost jika Shift ditekan
         if (movement.magnitude > 0.1f)
         {
             float currentMoveForce = isBoosting ? moveForce * boostMultiplier : moveForce;
@@ -104,42 +102,53 @@ public class BallController : MonoBehaviour
             
             rb.AddForce(movement * currentMoveForce, ForceMode.Force);
             
-            // Batasi kecepatan maksimal
             if (rb.linearVelocity.magnitude > currentMaxSpeed)
             {
                 rb.linearVelocity = rb.linearVelocity.normalized * currentMaxSpeed;
             }
         }
 
-        // Update posisi kamera
         UpdateCamera();
+    }
+    
+    // Fungsi ini akan dipanggil secara otomatis setiap kali scene baru dimuat
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        FindAndAssignCamera();
+    }
+    
+    // Fungsi untuk mencari dan menetapkan Main Camera
+    void FindAndAssignCamera()
+    {
+        if (Camera.main != null)
+        {
+            cameraTransform = Camera.main.transform;
+            Debug.Log("Main Camera ditemukan dan ditetapkan di scene: " + SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            Debug.LogError("Tidak ada kamera dengan Tag 'MainCamera' di scene ini!");
+        }
     }
 
     void HandleCameraRotation()
     {
-        // Dapatkan input mouse
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         
-        // Update angles
         currentHorizontalAngle += mouseX * mouseRotationSpeed;
         currentVerticalAngle -= mouseY * mouseRotationSpeed;
         
-        // Clamp vertical angle agar tidak terlalu atas atau bawah
         currentVerticalAngle = Mathf.Clamp(currentVerticalAngle, minVerticalAngle, maxVerticalAngle);
     }
 
     void HandleCameraZoom()
     {
-        // Dapatkan input scroll wheel
         float scrollInput = Input.GetAxis("Mouse ScrollWheel");
         
         if (scrollInput != 0f)
         {
-            // Update zoom distance
             currentZoomDistance -= scrollInput * zoomSpeed;
-            
-            // Clamp agar tidak melebihi batas min/max
             currentZoomDistance = Mathf.Clamp(currentZoomDistance, minZoomDistance, maxZoomDistance);
         }
     }
@@ -148,20 +157,15 @@ public class BallController : MonoBehaviour
     {
         if (cameraTransform != null)
         {
-            // Hitung rotasi kamera berdasarkan angles
             Quaternion rotation = Quaternion.Euler(currentVerticalAngle, currentHorizontalAngle, 0);
             
-            // Hitung posisi kamera berdasarkan rotasi dan zoom
-            Vector3 direction = rotation * Vector3.back; // Vector3.back = (0, 0, -1)
+            Vector3 direction = rotation * Vector3.back;
             Vector3 targetPosition = transform.position + (direction * currentZoomDistance) + (Vector3.up * cameraHeight);
             
-            // Smooth camera movement
             cameraTransform.position = Vector3.Lerp(cameraTransform.position, targetPosition, cameraSmoothSpeed * Time.deltaTime);
             
-            // Kamera selalu melihat ke bola
             cameraTransform.LookAt(transform.position + Vector3.up * cameraHeight);
         }
     }
-
-    
 }
+

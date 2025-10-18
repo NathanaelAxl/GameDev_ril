@@ -56,6 +56,9 @@ public class CoinManager : MonoBehaviour
         }
         UpdateCoinText();
 
+        // Beri tahu LevelManager untuk memeriksa kondisi menang
+        LevelManager.instance?.CheckWinConditions();
+
         if (currentCoins >= maxCoins)
         {
             Debug.Log("Quest Selesai! Semua koin telah dikumpulkan.");
@@ -69,44 +72,39 @@ public class CoinManager : MonoBehaviour
             coinText.text = $"Kumpulkan: {currentCoins}/{maxCoins} Coins";
         }
     }
-
-    // Fungsi utama untuk memunculkan koin secara acak
+    
     public void SpawnCoinBatch()
     {
-        // 1. Tentukan berapa banyak koin yang akan di-spawn (antara 1 sampai 3)
-        int amountToSpawn = Random.Range(1, 4); // Angka 4 eksklusif, jadi hasilnya 1, 2, atau 3
-
-        // 2. Ambil daftar koin dari pool yang saat ini sedang tidak aktif
+        int amountToSpawn = Random.Range(1, 4);
         List<GameObject> inactiveCoins = coinPool.Where(c => !c.activeInHierarchy).ToList();
-
-        // 3. Buat salinan daftar spawn point agar kita bisa menghapusnya sementara
         List<Transform> availableSpawns = new List<Transform>(spawnPoints);
 
-        // 4. Lakukan perulangan sebanyak jumlah koin yang akan di-spawn
         for (int i = 0; i < amountToSpawn; i++)
         {
-            // Pastikan masih ada koin dan spawn point yang tersedia
             if (inactiveCoins.Count == 0 || availableSpawns.Count == 0)
             {
                 Debug.LogWarning("Tidak ada cukup koin atau spawn point yang tersedia untuk spawn!");
-                return; // Keluar dari fungsi jika tidak bisa spawn lagi
+                return;
             }
 
-            // Pilih koin acak dari yang tidak aktif
             int coinIndex = Random.Range(0, inactiveCoins.Count);
             GameObject coinToSpawn = inactiveCoins[coinIndex];
-
-            // Pilih spawn point acak dari yang tersedia
+            
             int spawnIndex = Random.Range(0, availableSpawns.Count);
             Transform spawnPoint = availableSpawns[spawnIndex];
 
-            // Pindahkan posisi koin dan aktifkan
             coinToSpawn.transform.position = spawnPoint.position;
             coinToSpawn.SetActive(true);
 
-            // Hapus dari daftar sementara agar tidak dipilih lagi di batch yang sama
             inactiveCoins.RemoveAt(coinIndex);
             availableSpawns.RemoveAt(spawnIndex);
         }
     }
+
+    // Fungsi ini dibutuhkan oleh LevelManager untuk mengecek jumlah koin saat ini
+    public int GetCurrentCoins()
+    {
+        return currentCoins;
+    }
 }
+
