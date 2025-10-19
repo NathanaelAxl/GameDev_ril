@@ -1,19 +1,16 @@
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.SceneManagement; // Diperlukan untuk mereset saat scene dimuat
 
 public class CoinManager : MonoBehaviour
 {
     [Header("UI Components")]
     public TextMeshProUGUI coinText;
-    [Header("Coin Settings")]
-    public int maxCoins = 10;
+
+    // maxCoins sekarang akan dihitung secara otomatis
+    private int maxCoins;
     private int currentCoins = 0;
-    [Header("Object Pool")]
-    public List<GameObject> coinPool;
-    [Header("Spawn Settings")]
-    public List<Transform> spawnPoints;
+    
     public static CoinManager instance;
 
     private void Awake()
@@ -22,33 +19,48 @@ public class CoinManager : MonoBehaviour
         else Destroy(gameObject);
     }
     
-    void Start()
+    // Berlangganan event saat script aktif
+    private void OnEnable()
     {
-        // Panggil ResetState di awal untuk setup pertama kali
-        ResetState();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // Berhenti berlangganan saat script nonaktif
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
-    // --- PERBAIKAN ---
-    // Diubah dari 'private' menjadi 'public' agar bisa dipanggil oleh SceneSetupManager
+    // Fungsi ini akan berjalan setiap kali scene dimuat (termasuk setelah retry)
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Ganti "map1" dengan nama scene permainan Anda jika berbeda
+        if (scene.name == "map1") 
+        {
+            ResetState();
+        }
+    }
+    
+    // Fungsi untuk setup awal dan reset
     public void ResetState()
     {
-        Debug.Log("CoinManager: Mereset status koin.");
-        currentCoins = 0;
-        UpdateCoinText();
+        // Hitung semua objek dengan Tag "Coin" di scene untuk menentukan jumlah maksimal
+        maxCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
 
-        foreach(var coin in coinPool)
-        {
-            if(coin != null) coin.SetActive(false);
-        }
+        // Reset jumlah koin yang dikumpulkan
+        currentCoins = 0;
         
-        SpawnCoinBatch();
+        // Perbarui teks UI ke nilai awal
+        UpdateCoinText();
+        Debug.Log("CoinManager di-reset. Ditemukan " + maxCoins + " koin di level ini.");
     }
-    
+
     public void CollectCoin()
     {
         currentCoins++;
-        if (currentCoins > maxCoins) currentCoins = maxCoins;
         UpdateCoinText();
+
+        // Beri tahu LevelManager untuk memeriksa kondisi menang
         LevelManager.instance?.CheckWinConditions();
     }
 
@@ -60,29 +72,15 @@ public class CoinManager : MonoBehaviour
         }
     }
     
-    public void SpawnCoinBatch()
-    {
-        int amountToSpawn = Random.Range(1, 4);
-        List<GameObject> inactiveCoins = coinPool.Where(c => c != null && !c.activeInHierarchy).ToList();
-        List<Transform> availableSpawns = new List<Transform>(spawnPoints);
-
-        for (int i = 0; i < amountToSpawn; i++)
-        {
-            if (inactiveCoins.Count == 0 || availableSpawns.Count == 0) return;
-            int coinIndex = Random.Range(0, inactiveCoins.Count);
-            GameObject coinToSpawn = inactiveCoins[coinIndex];
-            int spawnIndex = Random.Range(0, availableSpawns.Count);
-            Transform spawnPoint = availableSpawns[spawnIndex];
-            coinToSpawn.transform.position = spawnPoint.position;
-            coinToSpawn.SetActive(true);
-            inactiveCoins.RemoveAt(coinIndex);
-            availableSpawns.RemoveAt(spawnIndex);
-        }
-    }
-    
+    // Fungsi ini dibutuhkan oleh LevelManager
     public int GetCurrentCoins()
     {
         return currentCoins;
     }
-}
 
+    // Fungsi ini juga dibutuhkan oleh LevelManager
+    public int GetMaxCoins()
+    {
+        return maxCoins;
+    }
+}

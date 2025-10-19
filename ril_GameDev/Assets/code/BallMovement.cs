@@ -7,7 +7,6 @@ public class BallController : MonoBehaviour
     [SerializeField] private float moveForce = 10f;
     [SerializeField] private float maxSpeed = 15f;
     [SerializeField] private float boostMultiplier = 2f;
-    [SerializeField] private float jumpForce = 5f;
     
     [Header("Camera Settings")]
     [SerializeField] private Transform cameraTransform;
@@ -18,13 +17,11 @@ public class BallController : MonoBehaviour
     [SerializeField] private float mouseRotationSpeed = 3f;
     [SerializeField] private float minVerticalAngle = -20f;
     [SerializeField] private float maxVerticalAngle = 80f;
-    [SerializeField] private float cameraResetSpeed = 10f;
     
     [Header("Camera Zoom Settings")]
     [SerializeField] private float zoomSpeed = 2f;
     [SerializeField] private float minZoomDistance = 3f;
     [SerializeField] private float maxZoomDistance = 15f;
-    [SerializeField] private float zoomSmoothSpeed = 10f;
     
     private Rigidbody rb;
     private bool isGrounded;
