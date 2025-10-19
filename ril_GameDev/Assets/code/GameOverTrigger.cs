@@ -3,57 +3,80 @@ using UnityEngine.SceneManagement;
 
 public class GameOverTrigger : MonoBehaviour
 {
-    // Ganti nama script menjadi GameOverTrigger jika Anda ingin mengganti yang lama
     public static GameOverTrigger instance;
 
-    [Header("UI")]
-    public GameObject gameOverUIObject;
-    public GameObject retryButton;
-    public GameObject exitButton;
+    [Header("UI Objects")]
+    [Tooltip("Seret Panel/Objek utama dari UI Game Over ke sini.")]
+    public GameObject gameOverScreen;
+
+    private static bool isGameOver = false;
 
     private void Awake()
     {
-        Debug.Log("GameOverTrigger: Awake() - Mencoba set instance.");
         if (instance == null)
         {
             instance = this;
-            Debug.Log("GameOverTrigger: Awake() - Instance BERHASIL di-set.");
         }
         else
         {
-            Debug.LogWarning("GameOverTrigger: Awake() - Instance sudah ada! Menghancurkan duplikat.");
             Destroy(gameObject);
         }
     }
 
     private void Start()
     {
-        if (gameOverUIObject != null) gameOverUIObject.SetActive(false);
-        if (retryButton != null) retryButton.SetActive(false);
-        if (exitButton != null) exitButton.SetActive(false);
-    }
-    
-    public void TriggerGameOver()
-    {
-        Debug.Log("Fungsi TriggerGameOver() dipanggil.");
-        if (gameOverUIObject != null) gameOverUIObject.SetActive(true);
-        if (retryButton != null) retryButton.SetActive(true);
-        if (exitButton != null) exitButton.SetActive(true);
-        Time.timeScale = 0.0001f;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        if (gameOverScreen != null)
+        {
+            gameOverScreen.SetActive(false);
+        }
+        isGameOver = false;
+        Time.timeScale = 1f;
     }
 
-    public void RetryGame()
+    public void TriggerGameOver()
     {
-        Debug.Log("--- DEEP DEBUG (3/3): RetryGame() di dalam GameOverTrigger BERHASIL dipanggil! ---");
-        Time.timeScale = 1f;
+        if (!isGameOver)
+        {
+            isGameOver = true;
+            Debug.Log("Game Over terpicu oleh manajer!");
+            if (gameOverScreen != null)
+            {
+                gameOverScreen.SetActive(true);
+            }
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
+    public void RetryGame() 
+    {
+        Debug.Log("Tombol Retry ditekan! Mengulang scene...");
+        Time.timeScale = 1f; 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void ExitGame()
+    // --- FUNGSI YANG DIPERBARUI ---
+    public void ExitGame() 
     {
-        // DEEP DEBUG: Langkah terakhir, konfirmasi fungsi ini terpanggil.
-        Debug.Log("--- DEEP DEBUG (3/3): ExitGame() di dalam GameOverTrigger BERHASIL dipanggil! ---");
+        Debug.Log("Kembali ke Main Menu... Menghancurkan objek persisten.");
+
+        // 1. Kembalikan waktu ke normal
+        Time.timeScale = 1f;
+
+        // 2. Cari objek Player yang "abadi" menggunakan Tag-nya
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            // Hancurkan objek Player
+            Destroy(playerObject);
+        }
+
+        // 3. Hancurkan GameManager itu sendiri agar semua progres ter-reset total
+        // 'this.gameObject' merujuk pada objek tempat script ini berada (yaitu GameManager)
+        Destroy(this.gameObject);
+
+        // 4. Setelah semua dihancurkan, baru muat scene Main Menu
+        SceneManager.LoadScene("StartUI");
     }
 }

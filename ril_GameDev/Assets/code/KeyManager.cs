@@ -4,12 +4,13 @@ using TMPro;
 public class KeyManager : MonoBehaviour
 {
     [Header("UI Components")]
-    [Tooltip("Seret objek Text (TMP) untuk kunci ke sini.")]
     public TextMeshProUGUI keyText;
 
-    private bool hasKey = false;
+    [Header("Game Object")]
+    [Tooltip("Seret objek Key dari scene ke sini agar bisa diaktifkan kembali.")]
+    public GameObject keyObject;
 
-    // Singleton pattern agar mudah diakses dari script lain
+    private bool hasKey = false;
     public static KeyManager instance;
 
     private void Awake()
@@ -26,21 +27,31 @@ public class KeyManager : MonoBehaviour
 
     void Start()
     {
-        // Atur teks awal saat permainan dimulai
-        UpdateKeyText();
+        // Panggil ResetState di awal untuk setup pertama kali
+        ResetState();
     }
 
-    // Fungsi ini akan dipanggil oleh script Key.cs saat kunci disentuh
+    // Fungsi ini diubah menjadi 'public' agar bisa dipanggil oleh SceneSetupManager
+    public void ResetState()
+    {
+        Debug.Log("KeyManager: Mereset status kunci.");
+        hasKey = false;
+        UpdateKeyText();
+        
+        // Aktifkan kembali objek kunci jika sudah diatur
+        if(keyObject != null)
+        {
+            keyObject.SetActive(true);
+        }
+    }
+    
     public void CollectKey()
     {
-        // Cek jika kunci belum dimiliki untuk mencegah fungsi berjalan berkali-kali
         if (!hasKey)
         {
             hasKey = true;
             UpdateKeyText();
             Debug.Log("Kunci telah didapatkan!");
-
-            // Beri tahu LevelManager untuk memeriksa kondisi menang
             LevelManager.instance?.CheckWinConditions();
         }
     }
@@ -49,18 +60,10 @@ public class KeyManager : MonoBehaviour
     {
         if (keyText != null)
         {
-            if (hasKey)
-            {
-                keyText.text = "Kumpulkan Kunci: 1/1";
-            }
-            else
-            {
-                keyText.text = "Kumpulkan Kunci: 0/1";
-            }
+            keyText.text = hasKey ? "Kumpulkan Kunci: 1/1" : "Kumpulkan Kunci: 0/1";
         }
     }
     
-    // Fungsi ini dibutuhkan oleh LevelManager untuk mengecek status kunci
     public bool HasKey()
     {
         return hasKey;
