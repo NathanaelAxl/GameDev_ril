@@ -19,12 +19,8 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-<<<<<<< HEAD
         // --- PERBAIKAN ---
         // Menggunakan FindFirstObjectByType yang lebih modern
-=======
-
->>>>>>> nima
         coinManager = FindFirstObjectByType<CoinManager>();
         keyManager = FindFirstObjectByType<KeyManager>();
 
@@ -42,11 +38,8 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
-<<<<<<< HEAD
         // --- PERBAIKAN ---
         // Menggunakan fungsi publik GetMaxCoins() alih-alih mengakses variabel private
-=======
->>>>>>> nima
         if (coinManager.GetCurrentCoins() >= coinManager.GetMaxCoins() && keyManager.HasKey())
         {
             Debug.Log("Semua syarat terpenuhi! Portal diaktifkan.");

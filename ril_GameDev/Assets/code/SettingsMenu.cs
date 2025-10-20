@@ -5,10 +5,7 @@ public class SettingsMenu : MonoBehaviour
 {
     public static SettingsMenu instance;
 
-<<<<<<< HEAD
     // --- BARU: Saklar global untuk status jeda ---
-=======
->>>>>>> nima
     public static bool isGamePaused = false;
 
     [Header("UI Components")]
@@ -22,10 +19,7 @@ public class SettingsMenu : MonoBehaviour
         else Destroy(gameObject);
     }
     
-<<<<<<< HEAD
     // --- BARU: Pastikan game tidak dalam status jeda saat dimulai ---
-=======
->>>>>>> nima
     private void Start()
     {
         isGamePaused = false;
@@ -50,10 +44,7 @@ public class SettingsMenu : MonoBehaviour
         settingsPanel.SetActive(true);
         Time.timeScale = 0f;
         
-<<<<<<< HEAD
         // --- BARU: Nyalakan saklar jeda ---
-=======
->>>>>>> nima
         isGamePaused = true; 
         
         Cursor.lockState = CursorLockMode.None;
@@ -66,10 +57,7 @@ public class SettingsMenu : MonoBehaviour
         settingsPanel.SetActive(false);
         Time.timeScale = 1f;
         
-<<<<<<< HEAD
         // --- BARU: Matikan saklar jeda ---
-=======
->>>>>>> nima
         isGamePaused = false; 
         
         Cursor.lockState = CursorLockMode.Locked;
@@ -78,10 +66,7 @@ public class SettingsMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-<<<<<<< HEAD
         // --- BARU: Pastikan saklar jeda mati sebelum pindah scene ---
-=======
->>>>>>> nima
         isGamePaused = false; 
         
         Time.timeScale = 1f;

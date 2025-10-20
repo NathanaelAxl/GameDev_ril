@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class PlayerPersistence : MonoBehaviour
 {
-<<<<<<< HEAD
     // Membuat instance tunggal dari objek ini
-=======
->>>>>>> nima
     public static PlayerPersistence instance;
 
     private void Awake()
     {
-<<<<<<< HEAD
         // Ini adalah pola Singleton.
         // Jika belum ada instance...
         if (instance == null)
@@ -24,15 +20,6 @@ public class PlayerPersistence : MonoBehaviour
         else
         {
             // ...maka hancurkan objek duplikat ini.
-=======
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
->>>>>>> nima
             Destroy(gameObject);
         }
     }

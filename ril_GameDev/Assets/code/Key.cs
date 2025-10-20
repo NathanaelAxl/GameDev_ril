@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-<<<<<<< HEAD
     // OnTriggerEnter akan berjalan ketika ada objek lain yang masuk ke dalam collider trigger kunci ini
     private void OnTriggerEnter(Collider other)
     {
@@ -14,14 +13,6 @@ public class Key : MonoBehaviour
             KeyManager.instance?.CollectKey();
 
             // Setelah kunci diambil, nonaktifkan objek kunci ini agar hilang dari scene
-=======
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            KeyManager.instance?.CollectKey();
-
->>>>>>> nima
             gameObject.SetActive(false);
         }
     }

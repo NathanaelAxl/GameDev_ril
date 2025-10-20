@@ -27,28 +27,18 @@ public class KeyManager : MonoBehaviour
 
     void Start()
     {
-<<<<<<< HEAD
         // Panggil ResetState di awal untuk setup pertama kali
         ResetState();
     }
 
     // Fungsi ini diubah menjadi 'public' agar bisa dipanggil oleh SceneSetupManager
-=======
-        ResetState();
-    }
-
->>>>>>> nima
     public void ResetState()
     {
         Debug.Log("KeyManager: Mereset status kunci.");
         hasKey = false;
         UpdateKeyText();
-<<<<<<< HEAD
         
         // Aktifkan kembali objek kunci jika sudah diatur
-=======
-
->>>>>>> nima
         if(keyObject != null)
         {
             keyObject.SetActive(true);
