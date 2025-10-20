@@ -7,18 +7,15 @@ public class TimerController : MonoBehaviour
     public TextMeshProUGUI timerText;
 
     [Header("Timer Settings")]
-    public float timeRemaining = 90; // Waktu awal dalam detik
+    public float timeRemaining = 90;
     private bool timerIsRunning = true;
 
-    // --- TAMBAHAN ---
-    // Variabel untuk menampung referensi ke script GameOverTrigger
     [Header("Game Over Logic")]
     [Tooltip("Seret objek yang memiliki script GameOverTrigger ke sini.")]
     public GameOverTrigger gameOverTrigger;
 
     void Update()
     {
-        // Hanya jalankan timer jika timerIsRunning adalah true
         if (timerIsRunning)
         {
             if (timeRemaining > 0)
@@ -33,9 +30,6 @@ public class TimerController : MonoBehaviour
                 timerIsRunning = false;
                 DisplayTime(timeRemaining);
 
-                // --- TAMBAHAN ---
-                // Panggil fungsi TriggerGameOver() dari script lain
-                // Cek dulu untuk memastikan referensinya tidak kosong
                 if (gameOverTrigger != null)
                 {
                     gameOverTrigger.TriggerGameOver();
@@ -55,11 +49,9 @@ public class TimerController : MonoBehaviour
             timeToDisplay = 0;
         }
 
-        // Menghitung menit dan detik
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 
-        // Memformat string menjadi "00:00"
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

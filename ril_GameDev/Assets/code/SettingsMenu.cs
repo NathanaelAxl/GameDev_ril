@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 public class SettingsMenu : MonoBehaviour
 {
     public static SettingsMenu instance;
-
-    // --- BARU: Saklar global untuk status jeda ---
     public static bool isGamePaused = false;
 
     [Header("UI Components")]
@@ -19,7 +17,6 @@ public class SettingsMenu : MonoBehaviour
         else Destroy(gameObject);
     }
     
-    // --- BARU: Pastikan game tidak dalam status jeda saat dimulai ---
     private void Start()
     {
         isGamePaused = false;
@@ -43,8 +40,6 @@ public class SettingsMenu : MonoBehaviour
         isMenuOpen = true;
         settingsPanel.SetActive(true);
         Time.timeScale = 0f;
-        
-        // --- BARU: Nyalakan saklar jeda ---
         isGamePaused = true; 
         
         Cursor.lockState = CursorLockMode.None;
@@ -56,8 +51,6 @@ public class SettingsMenu : MonoBehaviour
         isMenuOpen = false;
         settingsPanel.SetActive(false);
         Time.timeScale = 1f;
-        
-        // --- BARU: Matikan saklar jeda ---
         isGamePaused = false; 
         
         Cursor.lockState = CursorLockMode.Locked;
@@ -66,7 +59,6 @@ public class SettingsMenu : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        // --- BARU: Pastikan saklar jeda mati sebelum pindah scene ---
         isGamePaused = false; 
         
         Time.timeScale = 1f;

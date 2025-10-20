@@ -22,7 +22,7 @@ public class EnemyPatrol : MonoBehaviour
 
     void Update()
     {
-        if (patrolPoints.Length < 2) return; // harus minimal 2 titik
+        if (patrolPoints.Length < 2) return;
 
         if (isWaiting)
         {
@@ -46,7 +46,6 @@ public class EnemyPatrol : MonoBehaviour
         Transform targetPoint = patrolPoints[currentPointIndex];
         transform.position = Vector2.MoveTowards(transform.position, targetPoint.position, moveSpeed * Time.deltaTime);
 
-        // Balik arah sprite
         if (spriteRenderer != null)
         {
             spriteRenderer.flipX = targetPoint.position.x < transform.position.x;
@@ -54,7 +53,6 @@ public class EnemyPatrol : MonoBehaviour
 
         animator.SetBool("isWalking", true);
 
-        // Cek jarak ke titik tujuan
         if (Vector2.Distance(transform.position, targetPoint.position) < 0.05f)
         {
             isWaiting = true;
@@ -68,7 +66,7 @@ public class EnemyPatrol : MonoBehaviour
         currentPointIndex++;
         if (currentPointIndex >= patrolPoints.Length)
         {
-            currentPointIndex = 0; // ulang ke awal
+            currentPointIndex = 0;
         }
 
         Debug.Log("Moving to point: " + currentPointIndex);

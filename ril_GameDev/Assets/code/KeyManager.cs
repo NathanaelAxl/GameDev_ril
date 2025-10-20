@@ -27,18 +27,15 @@ public class KeyManager : MonoBehaviour
 
     void Start()
     {
-        // Panggil ResetState di awal untuk setup pertama kali
         ResetState();
     }
 
-    // Fungsi ini diubah menjadi 'public' agar bisa dipanggil oleh SceneSetupManager
     public void ResetState()
     {
         Debug.Log("KeyManager: Mereset status kunci.");
         hasKey = false;
         UpdateKeyText();
         
-        // Aktifkan kembali objek kunci jika sudah diatur
         if(keyObject != null)
         {
             keyObject.SetActive(true);

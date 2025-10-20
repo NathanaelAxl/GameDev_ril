@@ -56,27 +56,19 @@ public class GameOverTrigger : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // --- FUNGSI YANG DIPERBARUI ---
     public void ExitGame() 
     {
         Debug.Log("Kembali ke Main Menu... Menghancurkan objek persisten.");
 
-        // 1. Kembalikan waktu ke normal
         Time.timeScale = 1f;
 
-        // 2. Cari objek Player yang "abadi" menggunakan Tag-nya
         GameObject playerObject = GameObject.FindWithTag("Player");
         if (playerObject != null)
         {
-            // Hancurkan objek Player
             Destroy(playerObject);
         }
 
-        // 3. Hancurkan GameManager itu sendiri agar semua progres ter-reset total
-        // 'this.gameObject' merujuk pada objek tempat script ini berada (yaitu GameManager)
         Destroy(this.gameObject);
-
-        // 4. Setelah semua dihancurkan, baru muat scene Main Menu
         SceneManager.LoadScene("StartUI");
     }
 }

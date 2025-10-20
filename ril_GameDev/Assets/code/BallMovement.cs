@@ -31,28 +31,24 @@ public class BallController : MonoBehaviour
     private float currentHorizontalAngle = 0f;
     private float currentVerticalAngle = 20f;
 
-    // Fungsi OnEnable dan OnDisable untuk berlangganan event sceneLoaded
     void OnEnable()
     {
-        // Berlangganan fungsi OnSceneLoaded setiap kali scene baru selesai dimuat
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable()
     {
-        // Berhenti berlangganan untuk menghindari error saat objek dihancurkan
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        FindAndAssignCamera(); // Panggil fungsi untuk mencari kamera saat game pertama kali dimulai
+        FindAndAssignCamera();
     }
 
     void Update()
     {
-        // Jangan lakukan apa-apa jika game sedang dijeda
         if (SettingsMenu.isGamePaused) return;
 
         HandleCameraZoom();
@@ -65,8 +61,6 @@ public class BallController : MonoBehaviour
             Cursor.visible = true;
         }
 
-        // --- PERUBAHAN UTAMA DI SINI ---
-        // Hanya kunci kursor jika game TIDAK sedang dijeda
         if (!SettingsMenu.isGamePaused && Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.None)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -76,11 +70,8 @@ public class BallController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Tambahkan pengecekan jika kamera tidak ada
         if (cameraTransform == null)
         {
-            // Jika kamera belum ditemukan, jangan lakukan apa-apa.
-            // Ini mencegah error saat frame pertama di scene baru.
             return;
         }
         
@@ -113,13 +104,11 @@ public class BallController : MonoBehaviour
         UpdateCamera();
     }
     
-    // Fungsi ini akan dipanggil secara otomatis setiap kali scene baru dimuat
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         FindAndAssignCamera();
     }
     
-    // Fungsi untuk mencari dan menetapkan Main Camera
     void FindAndAssignCamera()
     {
         if (Camera.main != null)

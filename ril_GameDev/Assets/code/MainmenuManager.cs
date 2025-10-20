@@ -8,7 +8,6 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene("map 1");
     }
 
-    // Fungsi ini akan kita panggil saat tombol "Quit" diklik
     public void QuitGame()
     {
         Debug.Log("QUIT!");
