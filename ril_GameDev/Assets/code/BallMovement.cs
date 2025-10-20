@@ -1,5 +1,9 @@
 using UnityEngine;
+<<<<<<< HEAD
 using UnityEngine.SceneManagement; // Diperlukan untuk mendeteksi scene baru
+=======
+using UnityEngine.SceneManagement;
+>>>>>>> nima
 
 public class BallController : MonoBehaviour
 {
@@ -31,28 +35,43 @@ public class BallController : MonoBehaviour
     private float currentHorizontalAngle = 0f;
     private float currentVerticalAngle = 20f;
 
+<<<<<<< HEAD
     // Fungsi OnEnable dan OnDisable untuk berlangganan event sceneLoaded
     void OnEnable()
     {
         // Berlangganan fungsi OnSceneLoaded setiap kali scene baru selesai dimuat
+=======
+    void OnEnable()
+    {
+>>>>>>> nima
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable()
     {
+<<<<<<< HEAD
         // Berhenti berlangganan untuk menghindari error saat objek dihancurkan
+=======
+>>>>>>> nima
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+<<<<<<< HEAD
         FindAndAssignCamera(); // Panggil fungsi untuk mencari kamera saat game pertama kali dimulai
+=======
+        FindAndAssignCamera();
+>>>>>>> nima
     }
 
     void Update()
     {
+<<<<<<< HEAD
         // Jangan lakukan apa-apa jika game sedang dijeda
+=======
+>>>>>>> nima
         if (SettingsMenu.isGamePaused) return;
 
         HandleCameraZoom();
@@ -65,8 +84,11 @@ public class BallController : MonoBehaviour
             Cursor.visible = true;
         }
 
+<<<<<<< HEAD
         // --- PERUBAHAN UTAMA DI SINI ---
         // Hanya kunci kursor jika game TIDAK sedang dijeda
+=======
+>>>>>>> nima
         if (!SettingsMenu.isGamePaused && Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.None)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -76,11 +98,16 @@ public class BallController : MonoBehaviour
 
     void FixedUpdate()
     {
+<<<<<<< HEAD
         // Tambahkan pengecekan jika kamera tidak ada
         if (cameraTransform == null)
         {
             // Jika kamera belum ditemukan, jangan lakukan apa-apa.
             // Ini mencegah error saat frame pertama di scene baru.
+=======
+        if (cameraTransform == null)
+        {
+>>>>>>> nima
             return;
         }
         
@@ -113,13 +140,19 @@ public class BallController : MonoBehaviour
         UpdateCamera();
     }
     
+<<<<<<< HEAD
     // Fungsi ini akan dipanggil secara otomatis setiap kali scene baru dimuat
+=======
+>>>>>>> nima
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         FindAndAssignCamera();
     }
     
+<<<<<<< HEAD
     // Fungsi untuk mencari dan menetapkan Main Camera
+=======
+>>>>>>> nima
     void FindAndAssignCamera()
     {
         if (Camera.main != null)

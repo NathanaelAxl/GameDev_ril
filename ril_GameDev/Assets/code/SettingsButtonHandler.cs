@@ -1,26 +1,41 @@
 using UnityEngine;
+<<<<<<< HEAD
 using UnityEngine.EventSystems; // Wajib ada untuk mendeteksi event UI
 
 public class SettingsButtonHandler : MonoBehaviour, IPointerUpHandler
 {
     // Enum untuk memilih aksi yang akan dilakukan oleh tombol ini
+=======
+using UnityEngine.EventSystems;
+
+public class SettingsButtonHandler : MonoBehaviour, IPointerUpHandler
+{
+>>>>>>> nima
     public enum SettingsAction { ToggleMenu, CloseMenu, GoToMainMenu }
 
     [Tooltip("Pilih aksi yang akan dilakukan oleh tombol ini.")]
     public SettingsAction actionToPerform;
 
+<<<<<<< HEAD
     // Fungsi ini akan dipanggil secara otomatis oleh EventSystem
     // saat tekanan mouse dilepaskan di atas objek ini.
     public void OnPointerUp(PointerEventData eventData)
     {
         // Pastikan instance SettingsMenu ada
+=======
+    public void OnPointerUp(PointerEventData eventData)
+    {
+>>>>>>> nima
         if (SettingsMenu.instance == null)
         {
             Debug.LogError("Referensi ke SettingsMenu.instance tidak ditemukan!");
             return;
         }
 
+<<<<<<< HEAD
         // Jalankan aksi yang sesuai berdasarkan pilihan di Inspector
+=======
+>>>>>>> nima
         switch (actionToPerform)
         {
             case SettingsAction.ToggleMenu:

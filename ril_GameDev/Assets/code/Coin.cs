@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+<<<<<<< HEAD
     // Fungsi ini akan berjalan ketika ada objek lain yang masuk ke trigger koin
     private void OnTriggerEnter(Collider other)
     {
@@ -12,6 +13,14 @@ public class Coin : MonoBehaviour
             CoinManager.instance?.CollectCoin();
             
             // Hancurkan objek koin ini secara permanen dari scene
+=======
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            CoinManager.instance?.CollectCoin();
+            
+>>>>>>> nima
             Destroy(gameObject);
         }
     }

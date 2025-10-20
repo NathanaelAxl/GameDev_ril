@@ -56,11 +56,15 @@ public class GameOverTrigger : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+<<<<<<< HEAD
     // --- FUNGSI YANG DIPERBARUI ---
+=======
+>>>>>>> nima
     public void ExitGame() 
     {
         Debug.Log("Kembali ke Main Menu... Menghancurkan objek persisten.");
 
+<<<<<<< HEAD
         // 1. Kembalikan waktu ke normal
         Time.timeScale = 1f;
 
@@ -77,6 +81,18 @@ public class GameOverTrigger : MonoBehaviour
         Destroy(this.gameObject);
 
         // 4. Setelah semua dihancurkan, baru muat scene Main Menu
+=======
+        Time.timeScale = 1f;
+
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            Destroy(playerObject);
+        }
+
+        Destroy(this.gameObject);
+
+>>>>>>> nima
         SceneManager.LoadScene("StartUI");
     }
 }
