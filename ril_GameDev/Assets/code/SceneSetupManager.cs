@@ -3,58 +3,51 @@ using UnityEngine.SceneManagement;
 
 public class SceneSetupManager : MonoBehaviour
 {
+    // Flag statis agar pesan "Welcome" hanya muncul sekali per sesi permainan
+    private static bool isFirstLoad = true;
+
     private void OnEnable()
     {
-        // Berlangganan event sceneLoaded
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
-        // Berhenti berlangganan event
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Fungsi ini akan berjalan secara otomatis setiap kali scene dimuat
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("SceneSetupManager: Scene '" + scene.name + "' dimuat. Memulai setup...");
-
-        // --- Bagian 1: Atur Posisi Pemain ---
+        // --- Bagian 1: Atur Posisi Pemain (Tidak Berubah) ---
         GameObject player = GameObject.FindWithTag("Player");
-        GameObject startPoint = GameObject.FindWithTag("StartPoint"); // Kita akan buat Tag ini
-
+        GameObject startPoint = GameObject.FindWithTag("StartPoint");
         if (player != null && startPoint != null)
         {
-            // Pindahkan pemain ke posisi start point
             player.transform.position = startPoint.transform.position;
-            
-            // Reset fisika pemain (penting agar tidak meluncur saat spawn)
             Rigidbody rb = player.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
             }
-            Debug.Log("Pemain berhasil dipindahkan ke StartPoint.");
-        }
-        else
-        {
-            if (player == null) Debug.LogWarning("Objek dengan Tag 'Player' tidak ditemukan.");
-            if (startPoint == null) Debug.LogWarning("Objek dengan Tag 'StartPoint' tidak ditemukan di scene ini.");
-        }
-
-        // --- Bagian 2: Reset Manajer Lain ---
-        if (CoinManager.instance != null)
-        {
-            CoinManager.instance.ResetState();
         }
         
-        if (KeyManager.instance != null)
-        {
-            KeyManager.instance.ResetState();
-        }
+        // --- Bagian 2: Reset Manajer Lain (Tidak Berubah) ---
+        CoinManager.instance?.ResetState();
+        KeyManager.instance?.ResetState();
         
-        // Anda bisa menambahkan reset manajer lain di sini jika ada
+        // --- Bagian 3: Tampilkan Pesan Selamat Datang (Baru) ---
+        if (UIMessageManager.instance != null)
+        {
+            if (scene.name == "map1" && isFirstLoad)
+            {
+                UIMessageManager.instance.ShowMessage("Welcome to Our game");
+                isFirstLoad = false; // Tandai agar tidak muncul lagi saat retry
+            }
+            else if (scene.name == "map2")
+            {
+                UIMessageManager.instance.ShowMessage("Welcome to level 2");
+            }
+        }
     }
 }

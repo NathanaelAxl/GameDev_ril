@@ -52,6 +52,9 @@ public class BallController : MonoBehaviour
 
     void Update()
     {
+        // Jangan lakukan apa-apa jika game sedang dijeda
+        if (SettingsMenu.isGamePaused) return;
+
         HandleCameraZoom();
         HandleCameraRotation();
         isBoosting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
@@ -62,7 +65,9 @@ public class BallController : MonoBehaviour
             Cursor.visible = true;
         }
 
-        if (Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.None)
+        // --- PERUBAHAN UTAMA DI SINI ---
+        // Hanya kunci kursor jika game TIDAK sedang dijeda
+        if (!SettingsMenu.isGamePaused && Input.GetMouseButtonDown(0) && Cursor.lockState == CursorLockMode.None)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

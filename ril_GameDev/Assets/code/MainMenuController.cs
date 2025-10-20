@@ -1,9 +1,13 @@
+// --- TAMBAHAN BARU: Diperlukan untuk mengontrol Editor ---
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    // --- TAMBAHAN BARU ---
     // Start() akan berjalan secara otomatis setiap kali scene ini dimuat
     private void Start()
     {
@@ -18,16 +22,24 @@ public class MainMenuController : MonoBehaviour
     // Fungsi ini akan dipanggil oleh tombol Play
     public void PlayGame()
     {
-        // Ganti "Map1" dengan nama scene level pertama Anda
+        // Ganti "map1" dengan nama scene level pertama Anda
         SceneManager.LoadScene("map1"); 
     }
 
-    // Fungsi ini akan dipanggil oleh tombol Quit
+    // --- FUNGSI YANG DIPERBARUI ---
+    // Fungsi ini sekarang memiliki dua perilaku berbeda
     public void QuitGame()
     {
-        // Perintah ini hanya berfungsi saat game sudah di-build (bukan di Editor)
-        Debug.Log("Keluar dari game!"); // Pesan ini akan muncul di Console Editor
+        Debug.Log("Tombol Quit ditekan!");
+
+        // Perintah ini hanya akan dijalankan JIKA Anda berada di dalam Unity Editor
+        #if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        
+        // Perintah ini hanya akan dijalankan JIKA Anda berada di dalam game yang sudah di-build
+        #else
         Application.Quit();
+        #endif
     }
 }
 
