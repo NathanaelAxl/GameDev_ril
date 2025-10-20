@@ -794,7 +794,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CATVENTURE
+  m_text: BALLVENTURE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3dcb686cb2f80484da5e05b4d3a2baf5, type: 2}
   m_sharedMaterial: {fileID: -7512851055748343003, guid: 3dcb686cb2f80484da5e05b4d3a2baf5, type: 2}
@@ -822,7 +822,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 53.35
+  m_fontSize: 49.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
